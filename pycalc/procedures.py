@@ -3,17 +3,22 @@ import re
 
 
 def tokenize(expression):
-    tokens = expression.split()
+    """
+        Tokenize mathematical expression.
 
-    i = 0
-    while i < len(tokens):
-        sub_tokens = re.findall(rep_split_expr, tokens[i])
-        for x, sub_token in enumerate(sub_tokens):
-            if sub_token.isnumeric():
-                sub_tokens[x] = int(sub_token)
-        tokens[i:i + 1] = sub_tokens
-        i += len(sub_tokens)
+        Args:
+            expression (str): mathematical expression
 
+        Returns:
+            list: Tokens from expression. Types include float, integer (positive),
+            and string for operators.
+    """
+    tokens = re.findall(rep_split_expr, expression)
+    for index, token in enumerate(tokens):
+        if token.isnumeric():
+            tokens[index] = int(token)
+        elif re.fullmatch(rep_is_float, token):
+            tokens[index] = float(token)
     return tokens
 
 
@@ -34,7 +39,7 @@ def infix_to_postfix(tokens):
     output = []
 
     for token in tokens:
-        if type(token) == int:
+        if isnumeric(token):
             output.append(token)
         elif token == "(":
             operator_stack.append(token)
@@ -68,7 +73,7 @@ def postfix_solver(tokens):
     operands = []
 
     for token in tokens:
-        if type(token) == int:
+        if isnumeric(token):
             operands.append(token)
         else:
             if operators[token].arity == Arity.BINARY:

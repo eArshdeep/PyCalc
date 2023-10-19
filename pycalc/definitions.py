@@ -47,4 +47,13 @@ operators = {
     "NEG": Operator("NEG", Associativity.RIGHT, 2, neg, arity=Arity.UNARY)
 }
 
-rep_split_expr = "[\\d+.?\\d*]|[+|\\-|*|/|(|)|^]"
+rep_split_expr = "\\d+\\.?\\d*|[+|\\-|\\*|\\/|\\(|\\)|\\^]"
+""" Extract numbers and operators from string. Ignores whitespace. """
+rep_is_float = "\\d+\\.\\d*"
+""" Check if string is valid float. """
+
+
+def isnumeric(a: any) -> bool:
+    """ Return truthy indicating `a` is an integer or float """
+    t = type(a)
+    return t == int or t == float
